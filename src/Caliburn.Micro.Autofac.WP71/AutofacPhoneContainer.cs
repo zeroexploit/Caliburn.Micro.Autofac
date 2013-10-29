@@ -6,66 +6,73 @@ namespace Caliburn.Micro.Autofac
 {
   internal class AutofacPhoneContainer : IPhoneContainer
   {
-    private readonly IComponentContext context;
+      private readonly IComponentContext context;
 
-    public AutofacPhoneContainer(IComponentContext context)
-    {
-      this.context = context;
-    }
-
-    public event Action<object> Activated = _ => { };
-
-    public void RegisterWithAppSettings(Type service, string appSettingsKey, Type implementation)
-    {
-      if (!IsolatedStorageSettings.ApplicationSettings.Contains(appSettingsKey ?? service.FullName))
+      public AutofacPhoneContainer(IComponentContext context)
       {
-        IsolatedStorageSettings.ApplicationSettings[appSettingsKey ?? service.FullName] = context.Resolve(implementation);
+          this.context = context;
       }
 
-      var builder = new ContainerBuilder();
+      public event Action<object> Activated = _ => { };
 
-      builder.Register(c =>
+      public void RegisterWithAppSettings(Type service, string appSettingsKey, Type implementation)
       {
-        if (IsolatedStorageSettings.ApplicationSettings.Contains(appSettingsKey ?? service.FullName))
-        {
-          return IsolatedStorageSettings.ApplicationSettings[appSettingsKey ?? service.FullName];
-        }
+          if (!IsolatedStorageSettings.ApplicationSettings.Contains(appSettingsKey ?? service.FullName))
+          {
+              IsolatedStorageSettings.ApplicationSettings[appSettingsKey ?? service.FullName] = context.Resolve(implementation);
+          }
 
-        return c.Resolve(implementation);
-      }).Named(appSettingsKey, service);
+          var builder = new ContainerBuilder();
 
-      builder.Update(context.ComponentRegistry);
-    }
+          builder.Register(c =>
+          {
+              if (IsolatedStorageSettings.ApplicationSettings.Contains(appSettingsKey ?? service.FullName))
+              {
+                  return IsolatedStorageSettings.ApplicationSettings[appSettingsKey ?? service.FullName];
+              }
 
-    public void RegisterWithPhoneService(Type service, string phoneStateKey, Type implementation)
-    {
-      var pservice = (IPhoneService)GetInstance(typeof(IPhoneService), null);
+              return c.Resolve(implementation);
+          }).Named(appSettingsKey, service);
 
-      if (!pservice.State.ContainsKey(phoneStateKey ?? service.FullName))
-      {
-        pservice.State[phoneStateKey ?? service.FullName] = context.Resolve(implementation);
+          builder.Update(context.ComponentRegistry);
       }
 
-      var builder = new ContainerBuilder();
-
-      builder.Register(c =>
+      public void RegisterWithPhoneService(Type service, string phoneStateKey, Type implementation)
       {
-        var phoneService = c.Resolve<IPhoneService>();
+          var pservice = (IPhoneService)GetInstance(typeof(IPhoneService), null);
 
-        if (phoneService.State.ContainsKey(phoneStateKey ?? service.FullName))
-        {
-          return phoneService.State[phoneStateKey ?? service.FullName];
-        }
+          if (!pservice.State.ContainsKey(phoneStateKey ?? service.FullName))
+          {
+              pservice.State[phoneStateKey ?? service.FullName] = context.Resolve(implementation);
+          }
 
-        return c.Resolve(implementation);
-      }).Named(phoneStateKey, service);
+          var builder = new ContainerBuilder();
 
-      builder.Update(context.ComponentRegistry);
-    }
+          builder.Register(c =>
+          {
+              var phoneService = c.Resolve<IPhoneService>();
 
-    private object GetInstance(Type service, string key)
-    {
-      return string.IsNullOrEmpty(key) ? context.Resolve(service) : context.ResolveNamed(key, service);
-    }
+              if (phoneService.State.ContainsKey(phoneStateKey ?? service.FullName))
+              {
+                  return phoneService.State[phoneStateKey ?? service.FullName];
+              }
+
+              return c.Resolve(implementation);
+          }).Named(phoneStateKey, service);
+
+          builder.Update(context.ComponentRegistry);
+      }
+
+      private object GetInstance(Type service, string key)
+      {
+          return string.IsNullOrEmpty(key) ? context.Resolve(service) : context.ResolveNamed(key, service);
+      }
+
+      public void OnActivated(object instance)
+      {
+          var handle = this.Activated;
+          if (handle != null)
+              handle(instance);
+      }
   }
 }
