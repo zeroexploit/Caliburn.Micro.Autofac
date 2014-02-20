@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Caliburn.Micro.Autofac</id>
-    <version>1.5.0</version>
-    <title>Caliburn.Micro.Autofac</title>
-    <authors>David Buksbaum</authors>
-    <owners>David Buksbaum</owners>
-    <projectUrl>http://buksbaum.us/2011/07/06/introducing-caliburn-micro-logging-nlog/</projectUrl>
+    <id>Caliburn.Micro.AutofacBootstrap</id>
+    <version>2.0.0-alpha2</version>
+    <title>Caliburn.Micro.AutofacBootstrap</title>
+    <authors>David Buksbaum, Brendan Kowitz, Ziya SARIKAYA</authors>
+    <owners>Brendan Kowitz</owners>
+    <projectUrl>https://github.com/brendankowitz/Caliburn.Micro.Autofac</projectUrl>
     <iconUrl>http://www.eyecatch.no/favicon.ico</iconUrl>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,14 +14,15 @@
       Provides an Autofac enabled bootstrapper for Caliburn.Micro.
     </description>
     <summary>
-      Integration of Caliburn.Micro with Autofac. Source code with sample projects available at https://github.com/dbuksbaum/Caliburn.Micro.Autofac
+      Integration of Caliburn.Micro with Autofac. 
     </summary>
     <releaseNotes>
-      * Upgraded to Autofac 2.6.3.862
-      * Upgraded to Caliburn.Micro 1.4
-      * Upgraded solution / project files to VS2012
+      * Upgraded to Autofac 3.3.0
+      * Upgraded to Caliburn.Micro 2.0.0-alpha2
+      * Upgraded solution / project files to VS2013
       * Minimum WPF support is now .NET 4
-      * Added support for Silverlight 5
+      * Removed support for Silverlight 5
+      * Added support for Windows Store applications
       * Changed NuGet packaging to be a project in the solutions
       * Minor changes to the physical directory structure
     </releaseNotes>
@@ -29,8 +30,8 @@
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Caliburn.Micro" version="1.4" />
-      <dependency id="Autofac" version="2.6.3.862" />
+      <dependency id="Caliburn.Micro" version="2.0.0-alpha2" />
+      <dependency id="Autofac" version="3.3.0" />
     </dependencies>
     <references></references>
   </metadata>
