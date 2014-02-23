@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers
+namespace Caliburn.Micro.Autofac.StorageHandlers
 {
     /// <summary>
     /// Stores data in the phone state.

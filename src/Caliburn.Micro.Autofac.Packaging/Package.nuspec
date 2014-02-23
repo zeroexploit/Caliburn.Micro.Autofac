@@ -2,12 +2,12 @@
 <package >
   <metadata>
     <id>Caliburn.Micro.AutofacBootstrap</id>
-    <version>2.0.0-alpha2</version>
+    <version>2.0.0-beta</version>
     <title>Caliburn.Micro.AutofacBootstrap</title>
     <authors>David Buksbaum, Brendan Kowitz, Ziya SARIKAYA</authors>
     <owners>Brendan Kowitz</owners>
     <projectUrl>https://github.com/brendankowitz/Caliburn.Micro.Autofac</projectUrl>
-    <iconUrl>http://www.eyecatch.no/favicon.ico</iconUrl>
+    <iconUrl>https://raw2.github.com/BlueSpire/Caliburn.Micro/master/CaliburnIcon.png</iconUrl>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
@@ -18,7 +18,7 @@
     </summary>
     <releaseNotes>
       * Upgraded to Autofac 3.3.0
-      * Upgraded to Caliburn.Micro 2.0.0-alpha2
+      * Upgraded to Caliburn.Micro 2.0.0-beta1
       * Upgraded solution / project files to VS2013
       * Minimum WPF support is now .NET 4
       * Removed support for Silverlight 5
@@ -26,11 +26,10 @@
       * Changed NuGet packaging to be a project in the solutions
       * Minor changes to the physical directory structure
     </releaseNotes>
-    <copyright>Copyright David Buksbaum 2009-2012</copyright>
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Caliburn.Micro" version="2.0.0-alpha2" />
+      <dependency id="Caliburn.Micro" version="2.0.0-beta" />
       <dependency id="Autofac" version="3.3.0" />
     </dependencies>
     <references></references>

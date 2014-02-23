@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers {
+namespace Caliburn.Micro.Autofac.StorageHandlers {
     /// <summary>
     /// Handles the storage of a pariticular class.
     /// </summary>

@@ -4,7 +4,7 @@ using System.Linq;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers {
+namespace Caliburn.Micro.Autofac.StorageHandlers {
     /// <summary>
     /// Coordinates the saving and loading of objects based on application lifecycle events.
     /// </summary>

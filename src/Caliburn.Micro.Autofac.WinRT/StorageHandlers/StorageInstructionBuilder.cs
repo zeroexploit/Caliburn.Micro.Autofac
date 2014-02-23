@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers {
+namespace Caliburn.Micro.Autofac.StorageHandlers {
     /// <summary>
     /// Used to create a fluent interface for building up a storage instruction.
     /// </summary>

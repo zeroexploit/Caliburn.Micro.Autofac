@@ -2,7 +2,7 @@
 using System.Linq;
 using Windows.UI.Xaml;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers {
+namespace Caliburn.Micro.Autofac.StorageHandlers {
     /// <summary>
     /// Extension methods for configuring storage instructions.
     /// </summary>

@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Autofac.WinR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Autofac.WP8", "Caliburn.Micro.Autofac.WP8\Caliburn.Micro.Autofac.WP8.csproj", "{39FB1548-6960-40B0-B946-E3947AE50A21}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7DA83FE0-220F-4701-87F2-23C16A1FE2CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-Win8.1", "..\samples\Sample-Win81\Sample-Win8.1.csproj", "{8EEBF2DF-D20C-4480-9AC2-51880882535D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,8 +95,35 @@ Global
 		{39FB1548-6960-40B0-B946-E3947AE50A21}.Release|x64.ActiveCfg = Release|Any CPU
 		{39FB1548-6960-40B0-B946-E3947AE50A21}.Release|x86.ActiveCfg = Release|x86
 		{39FB1548-6960-40B0-B946-E3947AE50A21}.Release|x86.Build.0 = Release|x86
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|ARM.Build.0 = Debug|ARM
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|ARM.Deploy.0 = Debug|ARM
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|x64.ActiveCfg = Debug|x64
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|x64.Build.0 = Debug|x64
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|x64.Deploy.0 = Debug|x64
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|x86.ActiveCfg = Debug|x86
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|x86.Build.0 = Debug|x86
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Debug|x86.Deploy.0 = Debug|x86
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|ARM.ActiveCfg = Release|ARM
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|ARM.Build.0 = Release|ARM
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|ARM.Deploy.0 = Release|ARM
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|x64.ActiveCfg = Release|x64
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|x64.Build.0 = Release|x64
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|x64.Deploy.0 = Release|x64
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|x86.ActiveCfg = Release|x86
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|x86.Build.0 = Release|x86
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8EEBF2DF-D20C-4480-9AC2-51880882535D} = {7DA83FE0-220F-4701-87F2-23C16A1FE2CC}
 	EndGlobalSection
 EndGlobal

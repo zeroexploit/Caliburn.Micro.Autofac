@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers {
+namespace Caliburn.Micro.Autofac.StorageHandlers {
     /// <summary>
     /// An instruction for saving/loading data.
     /// </summary>

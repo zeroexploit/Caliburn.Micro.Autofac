@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers {
+namespace Caliburn.Micro.Autofac.StorageHandlers {
     
 
     /// <summary>

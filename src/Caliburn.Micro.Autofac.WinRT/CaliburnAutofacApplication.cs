@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Windows.ApplicationModel.Activation;
-using Autofac;
-using Autofac.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Diagnostics;
 using Windows.UI.Xaml.Navigation;
-using Caliburn.Micro.WinRT.Autofac.StorageHandlers;
+using Autofac;
+using Autofac.Core;
+using Caliburn.Micro.Autofac.StorageHandlers;
 
-namespace Caliburn.Micro.WinRT.Autofac
+namespace Caliburn.Micro.Autofac
 {
     public abstract class CaliburnAutofacApplication : CaliburnApplication, IActivateComponent
     {
@@ -21,8 +21,8 @@ namespace Caliburn.Micro.WinRT.Autofac
         private AutofacFrameAdapter _frameAdapter;
         private Frame _rootFrame;
         readonly IDictionary<WeakReference, ILifetimeScope> _viewsToScope = new Dictionary<WeakReference, ILifetimeScope>();
-        private static Type[] _exportedTypeCache;
         private StorageCoordinator _storageCoordinator;
+        private bool _clearTempStorage = false;
         protected object NavigationContext { get; set; }
 
         public event Action<object> Activated = _ => { };
@@ -60,32 +60,6 @@ namespace Caliburn.Micro.WinRT.Autofac
             Container = _builder.Build();
 
             ViewModelLocator.LocateForView = LocateForView;
-
-            _exportedTypeCache = AssemblySource.Instance.SelectMany(a => a.GetExportedTypes()).Where(x => x.IsAssignableTo<FrameworkElement>()).ToArray();
-            ViewLocator.LocateTypeForModelType = (modelType, displayLocation, context) =>
-            {
-                var viewTypeName = modelType.FullName;
-
-                if (Execute.InDesignMode)
-                {
-                    viewTypeName = ViewLocator.ModifyModelTypeAtDesignTime(viewTypeName);
-                }
-
-                viewTypeName = viewTypeName.Substring(
-                    0,
-                    viewTypeName.IndexOf('`') < 0
-                        ? viewTypeName.Length
-                        : viewTypeName.IndexOf('`')
-                    );
-
-                var viewTypeList = ViewLocator.TransformName(viewTypeName, context);
-                var viewType = viewTypeList.Join(_exportedTypeCache, n => n, t => t.FullName, (n, t) => t).FirstOrDefault();
-
-                if (viewType == null)
-                    Debug.WriteLine("View not found. Searched: {0}.", string.Join(", ", viewTypeList.ToArray()));
-
-                return viewType;
-            };
 
             SharingService = Container.Resolve<ISharingService>();
             _storageCoordinator = Container.Resolve<StorageCoordinator>();
@@ -265,14 +239,18 @@ namespace Caliburn.Micro.WinRT.Autofac
             }
         }
 
+        protected override void StartRuntime()
+        {
+            base.StartRuntime();
+            _storageCoordinator.ClearLastSession();
+        }
+
         protected sealed override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            Initialise();
-
             if (args.PreviousExecutionState == ApplicationExecutionState.ClosedByUser ||
                 args.PreviousExecutionState == ApplicationExecutionState.NotRunning)
             {
-                _storageCoordinator.ClearLastSession();
+                _clearTempStorage = true;
             }
             HandleLaunched(args);
         }

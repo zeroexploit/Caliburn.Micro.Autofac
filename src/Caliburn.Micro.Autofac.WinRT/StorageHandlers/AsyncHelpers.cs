@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Caliburn.Micro.WinRT.Autofac.StorageHandlers
+namespace Caliburn.Micro.Autofac.StorageHandlers
 {
     public static class AsyncHelpers
     {
