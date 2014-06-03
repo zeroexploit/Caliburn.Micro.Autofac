@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Autofac.Core;
-using Autofac.Features.OwnedInstances;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Autofac;
@@ -16,12 +15,10 @@ namespace Caliburn.Micro.Autofac
     public class AutofacBootstrapperBase : PhoneBootstrapperBase
     {
         readonly IDictionary<object, ViewScope> _viewsToScoped = new Dictionary<object, ViewScope>();
-        private Type[] _exportedTypeCache;
 
         public AutofacBootstrapperBase()
-            : base()
         {
-            Start();
+            StartRuntime();
         }
 
         protected IContainer Container { get; private set; }
@@ -317,7 +314,7 @@ namespace Caliburn.Micro.Autofac
         /// </summary>
         protected virtual void ConfigureBootstrapper()
         {
-            EnforceNamespaceConvention = true;
+            EnforceNamespaceConvention = false;
             TreatViewAsLoaded = false;
 
             ViewModelBaseType = typeof(System.ComponentModel.INotifyPropertyChanged);

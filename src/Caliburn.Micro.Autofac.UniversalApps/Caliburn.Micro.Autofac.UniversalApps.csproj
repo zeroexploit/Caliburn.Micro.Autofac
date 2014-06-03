@@ -8,7 +8,7 @@
     <ProjectGuid>{9C57AD35-713A-4445-A63F-2584FA834544}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Caliburn.Micro.Autofac.UniversalApps</RootNamespace>
+    <RootNamespace>Caliburn.Micro.Autofac</RootNamespace>
     <AssemblyName>Caliburn.Micro.Autofac</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile32</TargetFrameworkProfile>
@@ -48,8 +48,10 @@
     <Compile Include="StorageHandlers\IActivateComponent.cs" />
     <Compile Include="StorageHandlers\IStorageHandler.cs" />
     <Compile Include="StorageHandlers\IStorageMechanism.cs" />
+    <Compile Include="StorageHandlers\Registration\StartStorage.cs" />
     <Compile Include="StorageHandlers\StorageCoordinator.cs" />
     <Compile Include="StorageHandlers\StorageHandler.cs" />
+    <Compile Include="StorageHandlers\Registration\StorageHandlerModule.cs" />
     <Compile Include="StorageHandlers\StorageInstruction.cs" />
     <Compile Include="StorageHandlers\StorageInstructionBuilder.cs" />
     <Compile Include="StorageHandlers\StorageInstructionExtensions.cs" />
@@ -62,23 +64,25 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.4.0\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro">
-      <HintPath>..\packages\Caliburn.Micro.Core.2.0.0-beta2\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro, Version=2.0.0.6, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.0\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Caliburn.Micro.Extensions">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Caliburn.Micro.Extensions.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\win81\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.Platform">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Caliburn.Micro.Platform.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\win81\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Interactions">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Microsoft.Xaml.Interactions.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\win81\Microsoft.Xaml.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Interactivity">
-      <HintPath>..\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Microsoft.Xaml.Interactivity.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.2.0.0\lib\win81\Microsoft.Xaml.Interactivity.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -176,30 +176,32 @@
     <Reference Include="Autofac">
       <HintPath>..\..\src\packages\Autofac.3.4.0\lib\portable-win+net40+sl50+wp8\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro, Version=2.0.0.5, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro, Version=2.0.0.6, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Caliburn.Micro.Core.2.0.0-beta2\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.dll</HintPath>
+      <HintPath>..\..\src\packages\Caliburn.Micro.Core.2.0.0\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Autofac, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro.Extensions, Version=2.0.0.6, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Caliburn.Micro.AutofacBootstrap.2.0.0-beta2\lib\portable-net45+win8+wpa81\Caliburn.Micro.Autofac.dll</HintPath>
+      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0\lib\win81\Caliburn.Micro.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Extensions, Version=2.0.0.5, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+    <Reference Include="Caliburn.Micro.Platform, Version=2.0.0.6, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Caliburn.Micro.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=2.0.0.5, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Caliburn.Micro.Platform.dll</HintPath>
+      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0\lib\win81\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Interactions, Version=12.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Microsoft.Xaml.Interactions.dll</HintPath>
+      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0\lib\win81\Microsoft.Xaml.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Interactivity, Version=12.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0-beta2\lib\win81\Microsoft.Xaml.Interactivity.dll</HintPath>
+      <HintPath>..\..\src\packages\Caliburn.Micro.2.0.0\lib\win81\Microsoft.Xaml.Interactivity.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Caliburn.Micro.Autofac.UniversalApps\Caliburn.Micro.Autofac.UniversalApps.csproj">
+      <Project>{9c57ad35-713a-4445-a63f-2584fa834544}</Project>
+      <Name>Caliburn.Micro.Autofac.UniversalApps</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Autofac;
 using Autofac.Core;
 using Caliburn.Micro.Autofac.StorageHandlers;
+using Caliburn.Micro.Autofac.StorageHandlers.Registration;
 
 namespace Caliburn.Micro.Autofac
 {
@@ -22,7 +21,6 @@ namespace Caliburn.Micro.Autofac
         private Frame _rootFrame;
         readonly IDictionary<WeakReference, ILifetimeScope> _viewsToScope = new Dictionary<WeakReference, ILifetimeScope>();
         private StorageCoordinator _storageCoordinator;
-        private bool _clearTempStorage = false;
         protected object NavigationContext { get; set; }
 
         public event Action<object> Activated = _ => { };
@@ -42,29 +40,17 @@ namespace Caliburn.Micro.Autofac
             _builder.RegisterType<SharingService>().As<ISharingService>().SingleInstance();
             _builder.RegisterType<SettingsService>().As<ISettingsService>().SingleInstance();
 
-            _builder.RegisterAssemblyTypes(AssemblySource.Instance.Concat(new[] { typeof(IStorageMechanism).GetTypeInfo().Assembly }).ToArray())
-                .AssignableTo<IStorageMechanism>()
-                .AsImplementedInterfaces();
+            RegisterViewModels(x => typeof(INotifyPropertyChanged).IsAssignableFrom(x));
 
-            _builder.RegisterType<StorageCoordinator>().AsSelf().SingleInstance();
-
-            RegisterViewModels(x =>typeof(INotifyPropertyChanged).IsAssignableFrom(x));
-
-            _builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-                .AssignableTo<IStorageHandler>()
-                .AsSelf()
-                .AsImplementedInterfaces()
-                .SingleInstance();
+            _builder.RegisterModule<StorageHandlerModule>();
+            _builder.RegisterAssemblyModules(AssemblySource.Instance.ToArray());
 
             HandleConfigure(_builder);
             Container = _builder.Build();
 
             ViewModelLocator.LocateForView = LocateForView;
-
             SharingService = Container.Resolve<ISharingService>();
             _storageCoordinator = Container.Resolve<StorageCoordinator>();
-            _storageCoordinator.Start();
-
             _rootFrame = CreateApplicationFrame();
         }
 
@@ -243,21 +229,6 @@ namespace Caliburn.Micro.Autofac
         {
             base.StartRuntime();
             _storageCoordinator.ClearLastSession();
-        }
-
-        protected sealed override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            if (args.PreviousExecutionState == ApplicationExecutionState.ClosedByUser ||
-                args.PreviousExecutionState == ApplicationExecutionState.NotRunning)
-            {
-                _clearTempStorage = true;
-            }
-            HandleLaunched(args);
-        }
-
-        protected virtual void HandleLaunched(LaunchActivatedEventArgs args)
-        {
-            
         }
     }
 }
