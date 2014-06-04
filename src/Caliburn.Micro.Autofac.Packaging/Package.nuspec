@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Caliburn.Micro.AutofacBootstrap</id>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <title>Caliburn.Micro.AutofacBootstrap</title>
     <authors>David Buksbaum, Brendan Kowitz, Ziya SARIKAYA</authors>
     <owners>Brendan Kowitz</owners>
@@ -19,13 +19,13 @@
     <releaseNotes>
 * Updated to Caliburn Micro 2.0
 * Added support for Universal Apps
-* Upgraded to Autofac 3.4.0
+* Upgraded to Autofac 3.4.1
     </releaseNotes>
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
     <dependencies>
       <dependency id="Caliburn.Micro" version="2.0.0" />
-      <dependency id="Autofac" version="3.3.0" />
+      <dependency id="Autofac" version="3.4.1" />
     </dependencies>
     <references></references>
   </metadata>

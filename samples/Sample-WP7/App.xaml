@@ -7,15 +7,8 @@
     xmlns:local="clr-namespace:Sample_WP7">
 
     <!--Application Resources-->
-  <Application.Resources>
-    <local:AppBootstrapper x:Key="bootstrapper" />
-  </Application.Resources>
-  
-    <Application.ApplicationLifetimeObjects>
-        <!--Required object that handles lifetime events for the application-->
-        <shell:PhoneApplicationService 
-            Launching="Application_Launching" Closing="Application_Closing" 
-            Activated="Application_Activated" Deactivated="Application_Deactivated"/>
-    </Application.ApplicationLifetimeObjects>
+    <Application.Resources>
+        <local:AppBootstrapper x:Key="bootstrapper" />
+    </Application.Resources>
 
 </Application>
