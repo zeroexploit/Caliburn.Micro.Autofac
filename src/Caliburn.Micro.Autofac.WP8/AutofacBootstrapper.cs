@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Autofac.Core;
+using Caliburn.Micro.Autofac.Internal;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Autofac;
+using IContainer = Autofac.IContainer;
 
 
 namespace Caliburn.Micro.Autofac
@@ -269,10 +272,28 @@ namespace Caliburn.Micro.Autofac
         /// <summary>
         /// Enable fast app resume support.
         /// This allows tapping the main tile to resume at the screen the user was on before switching away from the app.
+        /// Call this method when overriding "Startup"
+        /// You must also update the app manifest and set ActivationPolicy="Resume"
         /// </summary>
         public void EnableFastAppResumeSupport(Uri mainScreenUri)
         {
             _mainScreen = mainScreenUri;
+        }
+
+        /// <summary>
+        /// Enable fast app resume support.
+        /// This allows tapping the main tile to resume at the screen the user was on before switching away from the app.
+        /// Call this method when overriding "Startup"
+        /// You must also update the app manifest and set ActivationPolicy="Resume"
+        /// </summary>
+        public void EnableFastAppResumeSupport<T>(IDictionary<string,string> parameters = null) where T : INotifyPropertyChanged
+        {
+            var viewModelType = typeof(T);
+            var type = ViewLocator.LocateTypeForModelType(viewModelType, null, null);
+            if (type == null)
+                throw new InvalidOperationException(string.Format("No view was found for {0}. See the log for searched views.", viewModelType.FullName));
+
+            EnableFastAppResumeSupport(new Uri(ViewLocator.DeterminePackUriFromType(viewModelType, type) + parameters.BuildQueryString(), UriKind.Relative));
         }
 
         private void FrameOnNavigated(object sender, NavigationEventArgs e)
