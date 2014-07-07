@@ -2,9 +2,9 @@
 <package >
   <metadata>
     <id>Caliburn.Micro.AutofacBootstrap</id>
-    <version>2.0.1</version>
+    <version>2.0.3</version>
     <title>Caliburn.Micro.AutofacBootstrap</title>
-    <authors>David Buksbaum, Brendan Kowitz, Ziya SARIKAYA</authors>
+    <authors>Brendan Kowitz, David Buksbaum, Ziya SARIKAYA</authors>
     <owners>Brendan Kowitz</owners>
     <projectUrl>https://github.com/brendankowitz/Caliburn.Micro.Autofac</projectUrl>
     <iconUrl>https://raw2.github.com/BlueSpire/Caliburn.Micro/master/CaliburnIcon.png</iconUrl>
@@ -19,13 +19,14 @@
     <releaseNotes>
 * Updated to Caliburn Micro 2.0
 * Added support for Universal Apps
-* Upgraded to Autofac 3.4.1
+* Upgraded to Autofac 3.5.0
+* Changed AddCustomConventions to be Protected Virtual.
     </releaseNotes>
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
     <dependencies>
       <dependency id="Caliburn.Micro" version="2.0.0" />
-      <dependency id="Autofac" version="3.4.1" />
+      <dependency id="Autofac" version="3.5.0" />
     </dependencies>
     <references></references>
   </metadata>

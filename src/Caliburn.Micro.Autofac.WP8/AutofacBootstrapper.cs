@@ -357,7 +357,7 @@ namespace Caliburn.Micro.Autofac
         {
         }
 
-        private static void AddCustomConventions()
+        protected virtual void AddCustomConventions()
         {
             ConventionManager.AddElementConvention<Pivot>(Pivot.ItemsSourceProperty, "SelectedItem", "SelectionChanged")
                 .ApplyBinding =
@@ -377,8 +377,7 @@ namespace Caliburn.Micro.Autofac
                     return false;
                 };
 
-            ConventionManager.AddElementConvention<Panorama>(Panorama.ItemsSourceProperty, "SelectedItem",
-                "SelectionChanged").ApplyBinding =
+            ConventionManager.AddElementConvention<Panorama>(Panorama.ItemsSourceProperty, "SelectedItem", "SelectionChanged").ApplyBinding =
                 (viewModelType, path, property, element, convention) =>
                 {
                     if (ConventionManager
