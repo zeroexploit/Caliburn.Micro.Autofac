@@ -59,7 +59,7 @@ namespace Caliburn.Micro.Autofac
             _builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
                 .Where(x => isViewModel(x))
                 .AsSelf()
-                .InstancePerLifetimeScope()
+                .InstancePerDependency()
                 .OnActivated(OnActivated);
         }
 
