@@ -8,22 +8,22 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Autofac;
 using Autofac.Core;
-using Caliburn.Micro.Autofac.StorageHandlers;
-using Caliburn.Micro.Autofac.StorageHandlers.Registration;
 
 namespace Caliburn.Micro.Autofac
 {
-    public abstract class CaliburnAutofacApplication : CaliburnApplication, IActivateComponent
+    public abstract class CaliburnAutofacApplication : CaliburnApplication, IActivateComponent, ISessionEvents
     {
         protected IContainer Container;
         private readonly ContainerBuilder _builder;
         private AutofacFrameAdapter _frameAdapter;
         private Frame _rootFrame;
         readonly IDictionary<WeakReference, ILifetimeScope> _viewsToScope = new Dictionary<WeakReference, ILifetimeScope>();
-        private StorageCoordinator _storageCoordinator;
         protected object NavigationContext { get; set; }
 
         public event Action<object> Activated = _ => { };
+        public event EventHandler<NavigatingCancelEventArgs> Navigating;
+        public event EventHandler<ViewModelDisposedEventArgs> ViewModelDisposed;
+        public event EventHandler NewSession;
         protected ISharingService SharingService { get; private set; }
 
         protected CaliburnAutofacApplication()
@@ -36,13 +36,11 @@ namespace Caliburn.Micro.Autofac
             _builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
             _builder.Register(x => _frameAdapter).As<INavigationService>().SingleInstance();
             _builder.Register(x => Container).As<IContainer>().SingleInstance();
+            _builder.RegisterInstance(this).AsSelf().As<IActivateComponent>().As<ISessionEvents>().SingleInstance();
 
             _builder.RegisterType<SharingService>().As<ISharingService>().SingleInstance();
             _builder.RegisterType<SettingsService>().As<ISettingsService>().SingleInstance();
-
             RegisterViewModels(x => typeof(INotifyPropertyChanged).IsAssignableFrom(x));
-
-            _builder.RegisterModule<StorageHandlerModule>();
             _builder.RegisterAssemblyModules(AssemblySource.Instance.ToArray());
 
             HandleConfigure(_builder);
@@ -50,7 +48,6 @@ namespace Caliburn.Micro.Autofac
 
             ViewModelLocator.LocateForView = LocateForView;
             SharingService = Container.Resolve<ISharingService>();
-            _storageCoordinator = Container.Resolve<StorageCoordinator>();
             _rootFrame = CreateApplicationFrame();
         }
 
@@ -60,6 +57,7 @@ namespace Caliburn.Micro.Autofac
                 .Where(x => isViewModel(x))
                 .AsSelf()
                 .InstancePerDependency()
+                .Named(x => x.FullName, typeof(INotifyPropertyChanged))
                 .OnActivated(OnActivated);
         }
 
@@ -172,12 +170,7 @@ namespace Caliburn.Micro.Autofac
         private void RootFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
         {
             var page = _rootFrame.Content as Page;
-
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                _storageCoordinator.Save(StorageMode.Temporary);
-            }
-
+            OnNavigating(e);
             if (!e.Cancel)
             {
                 if (page != null && page.NavigationCacheMode == NavigationCacheMode.Disabled)
@@ -186,7 +179,7 @@ namespace Caliburn.Micro.Autofac
                     var key = _viewsToScope.Keys.SingleOrDefault(x => x.Target == page);
                     if (key != null)
                     {
-                        _storageCoordinator.RemoveInstance(page.DataContext);
+                        OnViewModelDisposed(new ViewModelDisposedEventArgs(page.DataContext));
                         var scope = _viewsToScope[key];
                         scope.Dispose();
                         _viewsToScope.Remove(key);
@@ -228,7 +221,25 @@ namespace Caliburn.Micro.Autofac
         protected override void StartRuntime()
         {
             base.StartRuntime();
-            _storageCoordinator.ClearLastSession();
+            OnNewSession();
+        }
+
+        private void OnNavigating(NavigatingCancelEventArgs e)
+        {
+            var handler = Navigating;
+            if (handler != null) handler(this, e);
+        }
+
+        private void OnViewModelDisposed(ViewModelDisposedEventArgs e)
+        {
+            var handler = ViewModelDisposed;
+            if (handler != null) handler(this, e);
+        }
+
+        protected virtual void OnNewSession()
+        {
+            var handler = NewSession;
+            if (handler != null) handler(this, EventArgs.Empty);
         }
     }
 }

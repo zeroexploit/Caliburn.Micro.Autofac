@@ -45,10 +45,11 @@
     </Compile>
     <Compile Include="AutofacFrameAdapter.cs" />
     <Compile Include="CaliburnAutofacApplication.cs" />
+    <Compile Include="ISessionEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StorageHandlers\AppSettingsStorageMechanism.cs" />
     <Compile Include="StorageHandlers\AsyncHelpers.cs" />
-    <Compile Include="StorageHandlers\IActivateComponent.cs" />
+    <Compile Include="IActivateComponent.cs" />
     <Compile Include="StorageHandlers\IStorageHandler.cs" />
     <Compile Include="StorageHandlers\IStorageMechanism.cs" />
     <Compile Include="StorageHandlers\Registration\StartStorage.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="StorageHandlers\SuspensionManagerException.cs" />
     <Compile Include="StorageHandlers\WinRTLocalStorageMechanism.cs" />
     <Compile Include="StorageHandlers\WinRTRoamingStorageMechanism.cs" />
+    <Compile Include="ViewModelDisposedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac">

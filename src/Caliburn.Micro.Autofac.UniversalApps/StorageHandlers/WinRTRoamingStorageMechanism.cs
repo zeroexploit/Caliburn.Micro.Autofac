@@ -14,10 +14,10 @@ namespace Caliburn.Micro.Autofac.StorageHandlers {
     /// </summary>
     public class WinRTRoamingStorageMechanism : IStorageMechanism {
         private const string SessionStateFilename = "_sessionStateMechanism.json";
-        List<string> keys;
-        HashSet<string> _removedThisSession = new HashSet<string>();
+        List<string> _keys;
+        readonly HashSet<string> _removedThisSession = new HashSet<string>();
         private static Dictionary<string,object> _sessionState;
-        private static List<Type> _knownTypes = new List<Type>();
+        private static readonly List<Type> _knownTypes = new List<Type>();
         private StorageFolder Storage { get; set; }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Caliburn.Micro.Autofac.StorageHandlers {
         /// Begins the storage transaction.
         /// </summary>
         public void BeginStoring() {
-            keys = new List<string>();
+            _keys = new List<string>();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Caliburn.Micro.Autofac.StorageHandlers {
         public void Store(string key, object data) {
             if (!SessionState.ContainsKey(key))
             {
-                keys.Add(key);
+                _keys.Add(key);
             }
 
             SessionState[key] = data;
@@ -117,9 +117,9 @@ namespace Caliburn.Micro.Autofac.StorageHandlers {
         /// Clears the data stored in the last storage transaction.
         /// </summary>
         public void ClearLastSession() {
-            if(keys != null) {
-                keys.Apply(x => SessionState.Remove(x));
-                keys = null;
+            if(_keys != null) {
+                _keys.Apply(x => SessionState.Remove(x));
+                _keys = null;
             }
         }
 
@@ -144,6 +144,8 @@ namespace Caliburn.Micro.Autofac.StorageHandlers {
                     await fileStream.FlushAsync();
                 }
             }
+            catch (UnauthorizedAccessException)
+            { }
             catch (Exception e)
             {
                 throw new SuspensionManagerException(e);

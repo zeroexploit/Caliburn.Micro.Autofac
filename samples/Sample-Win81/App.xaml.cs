@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
+using Caliburn.Micro.Autofac.StorageHandlers.Registration;
 using Caliburn.Micro.WinRT.Autofac.Sample.Views;
 using Windows.ApplicationModel.Activation;
 
@@ -19,6 +20,7 @@ namespace Caliburn.Micro.WinRT.Autofac.Sample
 
         public override void HandleConfigure(ContainerBuilder builder)
         {
+            builder.RegisterModule<StorageHandlerModule>();
         }
     }
 }

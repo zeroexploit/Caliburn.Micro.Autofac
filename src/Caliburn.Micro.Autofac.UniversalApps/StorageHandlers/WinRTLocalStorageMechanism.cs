@@ -149,6 +149,8 @@ namespace Caliburn.Micro.Autofac.StorageHandlers
                     await fileStream.FlushAsync();
                 }
             }
+            catch (UnauthorizedAccessException)
+            {}
             catch (Exception e)
             {
                 throw new SuspensionManagerException(e);

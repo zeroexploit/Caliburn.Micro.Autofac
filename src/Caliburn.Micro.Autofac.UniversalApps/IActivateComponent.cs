@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Caliburn.Micro.Autofac.StorageHandlers
+namespace Caliburn.Micro.Autofac
 {
     public interface IActivateComponent
     {

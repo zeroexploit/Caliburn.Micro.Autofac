@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
     NavigationCacheMode="Disabled">
 
@@ -50,6 +51,7 @@
                 <TextBlock Text="{Binding TimeCreated}" FontSize="40"></TextBlock>
                 <TextBlock Text="Go foward:" FontSize="40"></TextBlock>
                 <Button Content="To view three" Command="{Binding ThirdView}"></Button>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Name}" micro:Action.Target="Caliburn.Micro.WinRT.Autofac.Sample.ViewModels.TargetViewModel"></TextBlock>
             </StackPanel>
         </Grid>
     </Grid>
