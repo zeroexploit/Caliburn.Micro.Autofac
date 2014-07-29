@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using Autofac;
+using Autofac.Core;
+using System.Linq;
 
 namespace Caliburn.Micro.Autofac
 {
@@ -65,7 +68,36 @@ namespace Caliburn.Micro.Autofac
 
         private object GetInstance(Type service, string key)
         {
-            return string.IsNullOrEmpty(key) ? context.Resolve(service) : context.ResolveNamed(key, service);
+            try
+            {
+                object instance;
+                if (string.IsNullOrEmpty(key))
+                {
+                    if (context.TryResolve(service, out instance))
+                        return instance;
+                }
+                else
+                {
+                    //caliburn can ask for a Keyed service without providing the type,
+                    //to fullfil this we must scan the actual component registry
+                    if (service == null)
+                    {
+                        var unTyped = context.ComponentRegistry.Registrations.SelectMany(
+                            x => x.Services.OfType<KeyedService>().Where(y => y.ServiceKey as string == key)).FirstOrDefault();
+                        service = unTyped.ServiceType;
+                    }
+
+                    if (context.TryResolveNamed(key, service, out instance))
+                        return instance;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+                throw;
+            }
+
+            throw new Exception(string.Format("Could not locate any instances of service {0}.", service.Name));
         }
 
         public void OnActivated(object instance)

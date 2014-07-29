@@ -18,6 +18,7 @@ namespace Caliburn.Micro.Autofac
     public class AutofacBootstrapperBase : PhoneBootstrapperBase
     {
         readonly IDictionary<object, ViewScope> _viewsToScoped = new Dictionary<object, ViewScope>();
+        readonly object _viewPlaceholder = new object();
 
         public AutofacBootstrapperBase()
         {
@@ -27,7 +28,7 @@ namespace Caliburn.Micro.Autofac
         protected IContainer Container { get; private set; }
 
         /// <summary>
-        /// Should the namespace convention be enforced for type registration. The default is true.
+        /// Should the namespace convention be enforced for type registration. The default is false.
         /// For views, this would require a views namespace to end with Views
         /// For view-models, this would require a view models namespace to end with ViewModels
         /// <remarks>Case is important as views would not match.</remarks>
@@ -119,6 +120,7 @@ namespace Caliburn.Micro.Autofac
                             : true)
                 .Where(type => type.GetInterface(ViewModelBaseType.Name, false) != null)
                 .AsSelf()
+                .Named(x => x.FullName, typeof(INotifyPropertyChanged))
                 .InstancePerDependency()
                 .OnActivated(x => x.Context.Resolve<AutofacPhoneContainer>().OnActivated(x.Instance));
 
@@ -178,7 +180,7 @@ namespace Caliburn.Micro.Autofac
                 var page = view as FrameworkElement;
                 if (page != null)
                 {
-                    var key = RootFrame.Source.ToString();
+                    var key = (_navigatingTo ?? RootFrame.Source).ToString();
 
                     if (_viewsToScoped.ContainsKey(key) == false)
                     {
@@ -189,13 +191,30 @@ namespace Caliburn.Micro.Autofac
                     }
                     else
                     {
-                        if (_viewsToScoped[key].View != page)
+                        if (_viewsToScoped[key].View == _viewPlaceholder)
+                        {
+                            var scope = _viewsToScoped[key];
+                            var updater = new ContainerBuilder();
+                            updater.RegisterInstance(view).AsSelf().AsImplementedInterfaces();
+                            updater.Update(scope.LifetimeScope.ComponentRegistry);
+                            _viewsToScoped[key] = new ViewScope(view, scope.LifetimeScope);
+                        }
+                        else if (_viewsToScoped[key].View != page)
                             throw new Exception("View instance is different to the view already registered at that Uri.");
                     }
                 }
 
                 return old(view);
             };
+        }
+
+        private void SetupPreScope(string uri)
+        {
+            if (_viewsToScoped.ContainsKey(uri) == false)
+            {
+                var scope = Container.BeginLifetimeScope();
+                _viewsToScoped[uri] = new ViewScope(_viewPlaceholder, scope);
+            }
         }
 
         private void FrameOnJournalEntryRemoved(object sender, JournalEntryRemovedEventArgs e)
@@ -219,9 +238,9 @@ namespace Caliburn.Micro.Autofac
         protected override object GetInstance(System.Type service, string key)
         {
             ViewScope scope;
-            if (!_viewsToScoped.TryGetValue(RootFrame.Source.ToString(), out scope))
+            var uriKey = (_navigatingTo ?? RootFrame.Source).ToString();
+            if (!_viewsToScoped.TryGetValue(uriKey, out scope))
                 throw new DependencyResolutionException("No matching lifetime scope to resolve with");
-
             object instance;
             if (string.IsNullOrEmpty(key))
             {
@@ -230,6 +249,15 @@ namespace Caliburn.Micro.Autofac
             }
             else
             {
+                //caliburn can ask for a Keyed service without providing the type,
+                //autofac requires a named service of a type, so to fullfil this we must scan the actual component registry
+                if (service == null)
+                {
+                    var unTyped = scope.LifetimeScope.ComponentRegistry.Registrations.SelectMany(
+                        x => x.Services.OfType<KeyedService>().Where(y => y.ServiceKey as string == key)).FirstOrDefault();
+                    service = unTyped.ServiceType;
+                }
+
                 if (scope.LifetimeScope.TryResolveNamed(key, service, out instance))
                     return instance;
             }
@@ -286,7 +314,7 @@ namespace Caliburn.Micro.Autofac
         /// Call this method when overriding "Startup"
         /// You must also update the app manifest and set ActivationPolicy="Resume"
         /// </summary>
-        public void EnableFastAppResumeSupport<T>(IDictionary<string,string> parameters = null) where T : INotifyPropertyChanged
+        public void EnableFastAppResumeSupport<T>(IDictionary<string, string> parameters = null) where T : INotifyPropertyChanged
         {
             var viewModelType = typeof(T);
             var type = ViewLocator.LocateTypeForModelType(viewModelType, null, null);
@@ -302,10 +330,13 @@ namespace Caliburn.Micro.Autofac
                 _shouldReset = e.NavigationMode == NavigationMode.Reset;
         }
 
+        private Uri _navigatingTo;
         private Uri _mainScreen;
         private bool _shouldReset;
         private void FrameOnNavigating(object sender, NavigatingCancelEventArgs e)
         {
+            _navigatingTo = e.Uri;
+            SetupPreScope(_navigatingTo.ToString());
             if (_mainScreen == null) return;
             if (_shouldReset == false || e.IsCancelable == false) return;
 
