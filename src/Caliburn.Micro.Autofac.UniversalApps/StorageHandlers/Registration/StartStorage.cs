@@ -12,7 +12,7 @@ namespace Caliburn.Micro.Autofac.StorageHandlers.Registration
         {
             _storageCoordinator = storageCoordinator;
             componentActivator.Navigating += ComponentActivatorOnNavigating;
-            componentActivator.ViewModelDisposed += ComponentActivatorOnViewModelDisposed;
+            componentActivator.RootViewModelDisposed += ComponentActivatorOnRootViewModelDisposed;
             componentActivator.NewSession += ComponentActivatorOnNewSession;
         }
 
@@ -21,7 +21,7 @@ namespace Caliburn.Micro.Autofac.StorageHandlers.Registration
             _storageCoordinator.ClearLastSession();
         }
 
-        private void ComponentActivatorOnViewModelDisposed(object sender, ViewModelDisposedEventArgs e)
+        private void ComponentActivatorOnRootViewModelDisposed(object sender, ViewModelDisposedEventArgs e)
         {
             _storageCoordinator.RemoveInstance(e.Instance);
         }

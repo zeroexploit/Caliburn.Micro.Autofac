@@ -23,7 +23,7 @@ namespace Caliburn.Micro.Autofac
 
         public event Action<object> Activated = _ => { };
         public event EventHandler<NavigatingCancelEventArgs> Navigating;
-        public event EventHandler<ViewModelDisposedEventArgs> ViewModelDisposed;
+        public event EventHandler<ViewModelDisposedEventArgs> RootViewModelDisposed;
         public event EventHandler NewSession;
         protected ISharingService SharingService { get; private set; }
 
@@ -73,17 +73,12 @@ namespace Caliburn.Micro.Autofac
             var viewType = view.GetType();
             if (!_viewsToScope.ContainsKey(viewType))
             {
-                var scope = Container.BeginLifetimeScope(builder => builder.RegisterInstance(view)
-                    .AsSelf()
-                    .AsImplementedInterfaces());
+                var scope = Container.BeginLifetimeScope(viewType);
                 _viewsToScope.Add(viewType, new ViewScope(view, scope));
             }
             else
             {
                 var current = _viewsToScope[viewType];
-                var containerBuilder = new ContainerBuilder();
-                containerBuilder.RegisterInstance(view).AsSelf().AsImplementedInterfaces();
-                containerBuilder.Update(current.LifetimeScope.ComponentRegistry);
                 _viewsToScope[viewType] = new ViewScope(view, current.LifetimeScope);
             }
 
@@ -183,13 +178,14 @@ namespace Caliburn.Micro.Autofac
             {
                 if (page != null && page.NavigationCacheMode == NavigationCacheMode.Disabled)
                 {
+                    var fromPageType = page.GetType();
                     //pages that have a cache mode of disabled won't be visited again
-                    if (_viewsToScope.ContainsKey(e.SourcePageType))
+                    if (_viewsToScope.ContainsKey(fromPageType))
                     {
                         OnViewModelDisposed(new ViewModelDisposedEventArgs(page.DataContext));
-                        var scope = _viewsToScope[e.SourcePageType];
+                        var scope = _viewsToScope[fromPageType];
                         scope.LifetimeScope.Dispose();
-                        _viewsToScope.Remove(e.SourcePageType);
+                        _viewsToScope.Remove(fromPageType);
                     }
                 }
 
@@ -218,7 +214,7 @@ namespace Caliburn.Micro.Autofac
             _navigatingTo = e.SourcePageType;
             if (!_viewsToScope.ContainsKey(_navigatingTo))
             {
-                var scope = Container.BeginLifetimeScope();
+                var scope = Container.BeginLifetimeScope(e.SourcePageType);
                 _viewsToScope.Add(_navigatingTo, new ViewScope(_framePlaceholder, scope));
             }
         }
@@ -256,7 +252,7 @@ namespace Caliburn.Micro.Autofac
 
         private void OnViewModelDisposed(ViewModelDisposedEventArgs e)
         {
-            var handler = ViewModelDisposed;
+            var handler = RootViewModelDisposed;
             if (handler != null) handler(this, e);
         }
 
