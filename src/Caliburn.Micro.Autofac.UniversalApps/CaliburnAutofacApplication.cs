@@ -17,7 +17,8 @@ namespace Caliburn.Micro.Autofac
         private readonly ContainerBuilder _builder;
         private AutofacFrameAdapter _frameAdapter;
         private Frame _rootFrame;
-        readonly IDictionary<WeakReference, ILifetimeScope> _viewsToScope = new Dictionary<WeakReference, ILifetimeScope>();
+        readonly IDictionary<Type, ViewScope> _viewsToScope = new Dictionary<Type, ViewScope>();
+        readonly object _framePlaceholder = new object();
         protected object NavigationContext { get; set; }
 
         public event Action<object> Activated = _ => { };
@@ -69,37 +70,36 @@ namespace Caliburn.Micro.Autofac
             if (element != null && element.DataContext != null && (element.DataContext as INotifyPropertyChanged != null))
                 return element.DataContext;
 
-            if (_viewsToScope.Keys.Where(x => x.IsAlive).All(x => x.Target != view))
+            var viewType = view.GetType();
+            if (!_viewsToScope.ContainsKey(viewType))
             {
-                var scope = Container.BeginLifetimeScope(builder =>
-                {
-                    builder.RegisterInstance(view)
-                        .AsSelf()
-                        .AsImplementedInterfaces();
-                    if (NavigationContext != null)
-                    {
-                        builder.RegisterInstance(NavigationContext)
-                            .AsSelf()
-                            .AsImplementedInterfaces();
-                    }
-                });
-                _viewsToScope.Add(new WeakReference(view), scope);
+                var scope = Container.BeginLifetimeScope(builder => builder.RegisterInstance(view)
+                    .AsSelf()
+                    .AsImplementedInterfaces());
+                _viewsToScope.Add(viewType, new ViewScope(view, scope));
+            }
+            else
+            {
+                var current = _viewsToScope[viewType];
+                var containerBuilder = new ContainerBuilder();
+                containerBuilder.RegisterInstance(view).AsSelf().AsImplementedInterfaces();
+                containerBuilder.Update(current.LifetimeScope.ComponentRegistry);
+                _viewsToScope[viewType] = new ViewScope(view, current.LifetimeScope);
             }
 
-            return ViewModelLocator.LocateForViewType(view.GetType());
+            return ViewModelLocator.LocateForViewType(viewType);
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            var weakKey = _viewsToScope.Keys.FirstOrDefault(x => x.IsAlive && x.Target == _rootFrame.Content);
-            var scope = weakKey != null ? _viewsToScope[weakKey] : Container;
+            var scope = _viewsToScope[CurrentSourcePageType];
 
             try
             {
                 object instance;
                 if (string.IsNullOrEmpty(key))
                 {
-                    if (scope.TryResolve(service, out instance))
+                    if (scope.LifetimeScope.TryResolve(service, out instance))
                         return instance;
                 }
                 else
@@ -108,13 +108,16 @@ namespace Caliburn.Micro.Autofac
                     //to fullfil this we must scan the actual component registry
                     if (service == null)
                     {
-                        var unTyped = Container.ComponentRegistry.Registrations.SelectMany(
-                            x => x.Services.OfType<KeyedService>().Where(y => y.ServiceKey as string == key))
-                                .FirstOrDefault();
+                        var unTyped = scope.LifetimeScope.ComponentRegistry.Registrations.Concat(Container.ComponentRegistry.Registrations).SelectMany(
+                            x => x.Services.OfType<KeyedService>().Where(y => y.ServiceKey as string == key)).FirstOrDefault();
+
+                        if (unTyped == null)
+                            throw new DependencyResolutionException(string.Format("Unable to locate a service type for key {0}", key));
+
                         service = unTyped.ServiceType;
                     }
 
-                    if (scope.TryResolveNamed(key, service, out instance))
+                    if (scope.LifetimeScope.TryResolveNamed(key, service, out instance))
                         return instance;
                 }
             }
@@ -128,12 +131,16 @@ namespace Caliburn.Micro.Autofac
             throw new Exception(string.Format("Could not locate any instances of service {0}.", service.Name));
         }
 
+        private Type CurrentSourcePageType
+        {
+            get { return _navigatingTo ?? _rootFrame.CurrentSourcePageType; }
+        }
+
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
-            var weakKey = _viewsToScope.Keys.FirstOrDefault(x => x.IsAlive && x.Target == _rootFrame.Content);
-            var scope = weakKey != null ? _viewsToScope[weakKey] : Container;
+            var scope = _viewsToScope[CurrentSourcePageType];
 
-            var result = scope.Resolve(typeof(IEnumerable<>).MakeGenericType(service)) as IEnumerable<object>;
+            var result = scope.LifetimeScope.Resolve(typeof(IEnumerable<>).MakeGenericType(service)) as IEnumerable<object>;
             return result;
         }
 
@@ -167,6 +174,7 @@ namespace Caliburn.Micro.Autofac
             NavigationContext = null;
         }
 
+        private Type _navigatingTo;
         private void RootFrameOnNavigating(object sender, NavigatingCancelEventArgs e)
         {
             var page = _rootFrame.Content as Page;
@@ -176,26 +184,42 @@ namespace Caliburn.Micro.Autofac
                 if (page != null && page.NavigationCacheMode == NavigationCacheMode.Disabled)
                 {
                     //pages that have a cache mode of disabled won't be visited again
-                    var key = _viewsToScope.Keys.SingleOrDefault(x => x.Target == page);
-                    if (key != null)
+                    if (_viewsToScope.ContainsKey(e.SourcePageType))
                     {
                         OnViewModelDisposed(new ViewModelDisposedEventArgs(page.DataContext));
-                        var scope = _viewsToScope[key];
-                        scope.Dispose();
-                        _viewsToScope.Remove(key);
+                        var scope = _viewsToScope[e.SourcePageType];
+                        scope.LifetimeScope.Dispose();
+                        _viewsToScope.Remove(e.SourcePageType);
                     }
                 }
 
-                var expired = new List<WeakReference>();
-                foreach (var scope in _viewsToScope.Where(scope => scope.Key.IsAlive == false))
+                var expired = new List<Type>();
+                foreach (var scope in _viewsToScope)
                 {
-                    expired.Add(scope.Key);
-                    scope.Value.Dispose();
+                    if (scope.Value.View.IsAlive == false)
+                    {
+                        expired.Add(scope.Key);
+                        scope.Value.LifetimeScope.Dispose();
+                    }
                 }
                 foreach (var key in expired)
                 {
                     _viewsToScope.Remove(key);
                 }
+                SetupPreScope(e);
+            }
+        }
+
+        /// <summary>
+        /// Sets up a new lifetime scope as soon as the navigation service indicates we're going to another page
+        /// </summary>
+        private void SetupPreScope(NavigatingCancelEventArgs e)
+        { 
+            _navigatingTo = e.SourcePageType;
+            if (!_viewsToScope.ContainsKey(_navigatingTo))
+            {
+                var scope = Container.BeginLifetimeScope();
+                _viewsToScope.Add(_navigatingTo, new ViewScope(_framePlaceholder, scope));
             }
         }
 

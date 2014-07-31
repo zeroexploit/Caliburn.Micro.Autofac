@@ -64,6 +64,7 @@
     <Compile Include="StorageHandlers\WinRTLocalStorageMechanism.cs" />
     <Compile Include="StorageHandlers\WinRTRoamingStorageMechanism.cs" />
     <Compile Include="ViewModelDisposedEventArgs.cs" />
+    <Compile Include="ViewScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Autofac">

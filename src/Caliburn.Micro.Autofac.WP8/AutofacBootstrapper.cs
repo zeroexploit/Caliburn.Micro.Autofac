@@ -253,8 +253,12 @@ namespace Caliburn.Micro.Autofac
                 //autofac requires a named service of a type, so to fullfil this we must scan the actual component registry
                 if (service == null)
                 {
-                    var unTyped = scope.LifetimeScope.ComponentRegistry.Registrations.SelectMany(
+                    var unTyped = scope.LifetimeScope.ComponentRegistry.Registrations.Concat(Container.ComponentRegistry.Registrations).SelectMany(
                         x => x.Services.OfType<KeyedService>().Where(y => y.ServiceKey as string == key)).FirstOrDefault();
+
+                    if(unTyped == null)
+                        throw new DependencyResolutionException(string.Format("Unable to locate a service type for key {0}", key));
+
                     service = unTyped.ServiceType;
                 }
 

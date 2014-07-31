@@ -20,7 +20,8 @@
 * Updated to Caliburn Micro 2.0
 * Added support for Universal Apps
 * Upgraded to Autofac 3.5.0
-* Changed AddCustomConventions to be Protected Virtual.
+* Changed AddCustomConventions to be Protected Virtual
+* Added support for Action.Target within correct lifetime scopes
     </releaseNotes>
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
