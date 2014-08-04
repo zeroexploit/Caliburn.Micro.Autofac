@@ -22,7 +22,7 @@ namespace Caliburn.Micro.Autofac
 
         public AutofacBootstrapperBase()
         {
-            StartRuntime();
+            Initialize();
         }
 
         protected IContainer Container { get; private set; }
