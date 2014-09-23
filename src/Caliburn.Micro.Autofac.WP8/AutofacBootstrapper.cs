@@ -428,6 +428,8 @@ namespace Caliburn.Micro.Autofac
 
                     return false;
                 };
+
+            ConventionManager.AddElementConvention<LongListSelector>(LongListSelector.ItemsSourceProperty, "SelectedItem", "SelectionChanged");
         }
     }
 }
