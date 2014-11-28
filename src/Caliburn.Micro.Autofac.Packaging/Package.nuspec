@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Caliburn.Micro.AutofacBootstrap</id>
-    <version>2.0.7</version>
+    <version>2.0.8</version>
     <title>Caliburn.Micro.AutofacBootstrap</title>
     <authors>Brendan Kowitz, David Buksbaum, Ziya SARIKAYA</authors>
     <owners>Brendan Kowitz</owners>
@@ -17,17 +17,17 @@
       Integration of Caliburn.Micro with Autofac. 
     </summary>
     <releaseNotes>
-* Updated to Caliburn Micro 2.0
+* Updated to Caliburn Micro 2.0.1
 * Added support for Universal Apps
-* Upgraded to Autofac 3.5.0
+* Upgraded to Autofac 3.5.2
 * Changed AddCustomConventions to be Protected Virtual
 * Added support for Action.Target within correct lifetime scopes
     </releaseNotes>
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="Caliburn.Micro" version="2.0.0" />
-      <dependency id="Autofac" version="3.5.0" />
+      <dependency id="Caliburn.Micro" version="2.0.1" />
+      <dependency id="Autofac" version="3.5.2" />
     </dependencies>
     <references></references>
   </metadata>

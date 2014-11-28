@@ -1,23 +1,37 @@
-﻿using Caliburn.Micro.Autofac;
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Windows;
+using Autofac;
+using Caliburn.Micro.Autofac;
 
 namespace Sample_WPF
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using Caliburn.Micro;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Caliburn.Micro;
 
-  public class AppBootstrapper : AutofacBootstrapper<ShellViewModel>
-  {
-    protected override void ConfigureBootstrapper()
+    public class AppBootstrapper : AutofacBootstrapper<ShellViewModel>
     {
-      //  you must call the base version first!
-      base.ConfigureBootstrapper();
+        public AppBootstrapper()
+        {
+            Initialize();
+        }
 
-      //  override namespace naming convention
-      EnforceNamespaceConvention = false;
-      //  change our view model base type
-      ViewModelBaseType = typeof(IShell);
+        protected override void ConfigureContainer(ContainerBuilder builder)
+        {
+            
+        }
+
+        protected override void ConfigureBootstrapper()
+        {
+            base.ConfigureBootstrapper();
+            EnforceNamespaceConvention = false;
+        }
+
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            DisplayRootViewFor<ShellViewModel>();
+        }
     }
-  }
 }
