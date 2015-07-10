@@ -1,8 +1,9 @@
-﻿<Application
+﻿<autofac:CaliburnAutofacApplication
     x:Class="Sample_WP81.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Sample_WP81">
+    xmlns:local="using:Sample_WP81"
+    xmlns:autofac="using:Caliburn.Micro.Autofac">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -17,4 +18,4 @@
 
         </ResourceDictionary>
     </Application.Resources>
-</Application>
+</autofac:CaliburnAutofacApplication>

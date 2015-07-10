@@ -1,25 +1,12 @@
-﻿using Sample_WP81.Common;
-using Sample_WP81.Data;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Input;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.Xaml;
+﻿using System;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Sample_WP81.Common;
+using Sample_WP81.DataModel;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkID=391641
 
-namespace Sample_WP81
+namespace Sample_WP81.Views
 {
     /// <summary>
     /// A page that displays details for a single item within a group.

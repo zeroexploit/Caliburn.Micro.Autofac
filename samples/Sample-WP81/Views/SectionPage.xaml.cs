@@ -1,46 +1,22 @@
-﻿using Sample_WP81.Common;
-using Sample_WP81.Data;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using System;
 using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Sample_WP81.Common;
+using Sample_WP81.DataModel;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
-namespace Sample_WP81
+namespace Sample_WP81.Views
 {
-    /// <summary>
-    /// A page that displays a grouped collection of items.
-    /// </summary>
-    public sealed partial class HubPage : Page
+    public sealed partial class SectionPage : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
-        public HubPage()
+        public SectionPage()
         {
             this.InitializeComponent();
-
-            // Hub is only supported in Portrait orientation
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
-
-            this.NavigationCacheMode = NavigationCacheMode.Required;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -77,9 +53,9 @@ namespace Sample_WP81
         /// session.  The state will be null the first time a page is visited.</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
-            this.DefaultViewModel["Groups"] = sampleDataGroups;
+            // TODO: Create an appropriate data model for your problem domain to replace the sample data.
+            var group = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
+            this.DefaultViewModel["Group"] = group;
         }
 
         /// <summary>
@@ -96,28 +72,17 @@ namespace Sample_WP81
         }
 
         /// <summary>
-        /// Shows the details of a clicked group in the <see cref="SectionPage"/>.
-        /// </summary>
-        private void GroupSection_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(SectionPage), groupId))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
-        }
-
-        /// <summary>
         /// Shows the details of an item clicked on in the <see cref="ItemPage"/>
         /// </summary>
+        /// <param name="sender">The GridView displaying the item clicked.</param>
+        /// <param name="e">Event data that describes the item clicked.</param>
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                var resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
         }
 
