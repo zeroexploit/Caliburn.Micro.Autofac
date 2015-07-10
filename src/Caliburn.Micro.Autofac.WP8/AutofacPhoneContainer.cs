@@ -91,7 +91,7 @@ namespace Caliburn.Micro.Autofac
                         return instance;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 if (Debugger.IsAttached) Debugger.Break();
                 throw;

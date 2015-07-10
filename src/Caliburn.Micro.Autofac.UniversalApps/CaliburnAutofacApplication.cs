@@ -38,10 +38,12 @@ namespace Caliburn.Micro.Autofac
             _builder.Register(x => _frameAdapter).As<INavigationService>().SingleInstance();
             _builder.Register(x => Container).As<IContainer>().SingleInstance();
             _builder.RegisterInstance(this).AsSelf().As<IActivateComponent>().As<ISessionEvents>().SingleInstance();
+#if WINDOWS_APP
             _builder.RegisterType<SettingsWindowManager>().As<ISettingsWindowManager>().AutoActivate().SingleInstance();
-
-            _builder.RegisterType<SharingService>().As<ISharingService>().SingleInstance();
             _builder.RegisterType<SettingsService>().As<ISettingsService>().SingleInstance();
+#endif
+            _builder.RegisterType<SharingService>().As<ISharingService>().SingleInstance();
+
             RegisterViewModels(x => typeof(INotifyPropertyChanged).IsAssignableFrom(x));
             _builder.RegisterAssemblyModules(AssemblySource.Instance.ToArray());
 

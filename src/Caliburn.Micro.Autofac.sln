@@ -32,13 +32,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-Win8.1", "..\samples\Sample-Win81\Sample-Win8.1.csproj", "{8EEBF2DF-D20C-4480-9AC2-51880882535D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Autofac.UniversalApps", "Caliburn.Micro.Autofac.UniversalApps\Caliburn.Micro.Autofac.UniversalApps.csproj", "{9C57AD35-713A-4445-A63F-2584FA834544}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Autofac.WinStore", "Caliburn.Micro.Autofac.UniversalApps\Caliburn.Micro.Autofac.WinStore.csproj", "{9C57AD35-713A-4445-A63F-2584FA834544}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-WP81", "..\samples\Sample-WP81\Sample-WP81.csproj", "{A8144F41-2BD2-41E7-8826-724AFE27FE89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-WP7", "..\samples\Sample-WP7\Sample-WP7.csproj", "{A3DAE49F-FE6D-4F82-AA79-B397BC92519A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-WP8", "..\samples\Sample-WP7\Sample-WP8.csproj", "{A3DAE49F-FE6D-4F82-AA79-B397BC92519A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample-WPF", "..\samples\Sample-WPF\Sample-WPF.csproj", "{0110C9AE-2ACA-4EC4-85B5-E06C54EF9DFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Autofac.WinPhoneUniversal", "Caliburn.Micro.Autofac.WinPhoneUniversal\Caliburn.Micro.Autofac.WinPhoneUniversal.csproj", "{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -210,6 +212,20 @@ Global
 		{0110C9AE-2ACA-4EC4-85B5-E06C54EF9DFA}.Release|x64.ActiveCfg = Release|x86
 		{0110C9AE-2ACA-4EC4-85B5-E06C54EF9DFA}.Release|x86.ActiveCfg = Release|x86
 		{0110C9AE-2ACA-4EC4-85B5-E06C54EF9DFA}.Release|x86.Build.0 = Release|x86
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|ARM.ActiveCfg = Release|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|x64.ActiveCfg = Release|Any CPU
+		{A8397EA1-F15A-428A-B9BE-D9F124FCFD7A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
