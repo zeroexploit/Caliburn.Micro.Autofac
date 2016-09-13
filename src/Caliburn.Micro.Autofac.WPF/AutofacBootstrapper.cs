@@ -169,5 +169,13 @@ namespace Caliburn.Micro.Autofac
     protected virtual void ConfigureContainer(ContainerBuilder builder)
     {
     }
+
+    /// <summary>Override this to add custom behavior on exit.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The event args.</param>
+    protected override void OnExit(object sender, EventArgs e)
+    {
+      this.Container.Dispose();
+    }
   }
 }
