@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caliburn.Micro.Autofac.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace Caliburn.Micro.Autofac.StorageHandlers {
         /// </summary>
         public void EndStoring()
         {
-            SaveAsync();
+            SaveAsync().FireAndForget();
         }
 
         /// <summary>

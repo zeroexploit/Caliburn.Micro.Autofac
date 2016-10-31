@@ -59,6 +59,7 @@
     <Compile Include="StorageHandlers\SuspensionManagerException.cs" />
     <Compile Include="StorageHandlers\WinRTLocalStorageMechanism.cs" />
     <Compile Include="StorageHandlers\WinRTRoamingStorageMechanism.cs" />
+    <Compile Include="Utils\TaskExtensions.cs" />
     <Compile Include="ViewModelDisposedEventArgs.cs" />
     <Compile Include="ViewScope.cs" />
   </ItemGroup>
