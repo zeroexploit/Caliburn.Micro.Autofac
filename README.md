@@ -1,5 +1,4 @@
-Caliburn.Micro.AutofacBootstrap
-======================
+# Caliburn.Micro.AutofacBootstrap
 
 Home of the [Caliburn.Micro.AutofacBootstrap](http://nuget.org/List/Packages/Caliburn.Micro.AutofacBootstrap) nuget package.
 Integrates [Caliburn.Micro](https://github.com/Caliburn-Micro/Caliburn.Micro) bootstrapping phase with [Autofac](https://github.com/autofac/Autofac) IoC container,
@@ -30,3 +29,14 @@ to:
 ```
 %ProgramFiles(x86)%\Microsoft SDKs\UAP\v0.8.0.0\ExtensionSDKs
 ```
+
+## Acknowledgments
+
+The Caliburn.Micro.Autofac project is making use of the following OSS projects:
+
+* [Autofac](http://autofac.org/) - under the [MIT license](https://github.com/autofac/Autofac/blob/develop/LICENSE)
+* [Caliburn.Micro](http://caliburnmicro.com/) - under the [MIT license](https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/License.txt)
+
+## License
+
+This project is licensed under the [MIT license](./License.txt).
