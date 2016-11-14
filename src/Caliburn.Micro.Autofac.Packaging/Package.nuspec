@@ -17,10 +17,7 @@
       Integration of Caliburn.Micro with Autofac.
     </summary>
     <releaseNotes>
-* Updated WPF version to .NET framework 4.5
-* Updated to Caliburn.Micro 3.0.1
-* Updated to Autofac 4.2.0
-* Removed Windows Phone 8-related versions and samples
+* Release EventAggregator subscriptions as soon as ViewModels' lifetime expires
     </releaseNotes>
     <tags>Caliburn.Micro Autofac IoC DI MVVM</tags>
     <language>en-US</language>
