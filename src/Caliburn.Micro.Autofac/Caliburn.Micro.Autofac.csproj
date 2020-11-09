@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.0.0" />
-    <PackageReference Include="Caliburn.Micro" Version="4.0.153-rc"/>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.136-rc" />
   </ItemGroup>
 
 </Project>
